@@ -6,7 +6,7 @@ This project is in continuation of a blog post I did some months back on how to 
 
 .Download A-MQ
 ----
-https://access.redhat.com/jbossnetwork/restricted/listSoftware.html?downloadType=distributions&product=jboss.amq&productChanged=yes[jboss-a-mq-6.1.0.redhat-379]
+https://access.redhat.com/jbossnetwork/restricted/listSoftware.html?downloadType=distributions&product=jboss.amq&productChanged=yes [jboss-a-mq-6.1.0.redhat-379]
 ----
 
 NOTE: You can also use apache's activeMQ, which are roughly equivallant
@@ -71,13 +71,32 @@ https://github.com/jasonrbriggs/stomp.py
 
 NOTE: Get additional implemetations here http://stomp.github.io/implementations.html
 
-== Download STOMP script
-
-
-
 == Run script
 
+[source,bash]
 ----
+$ python3 msg-send-recv.py
+enter topic name, e.g. jms.topic.spin :topic.helloworld
+enter MQ useradmin
+Password:
+Enter server ip, e.g. 192.168.122.170 :192.168.122.170
 
+on_connecting 192.168.122.170 61613
+
+on_send STOMP {'accept-version': '1.1', 'passcode': 'admin', 'login': 'admin', 'host': 'example.com'}
+
+on_connected {'version': '1.1', 'heart-beat': '0,0', 'server': 'ActiveMQ/5.8.0.redhat-60024', 'session': 'ID:irs.example.com-36888-1416341937814-2:1'}
+
+on_send SUBSCRIBE {'id': 1, 'ack': 'auto', 'destination': 'topic.helloworld'}
+
+on_send SEND {'destination': 'topic.helloworld'} b'the current time is:  15:19:40'
+
+on_before_message {'message-id': 'ID:irs.example.com-36888-1416341937814-2:1:-1:1:1', 'priority': '4', 'subscription': '1', 'expires': '0', 'timestamp': '1416341980900', 'destination': '/queue/topic.helloworld'} the current time is:  15:19:40
+
+on_message {'message-id': 'ID:irs.example.com-36888-1416341937814-2:1:-1:1:1', 'priority': '4', 'subscription': '1', 'expires': '0', 'timestamp': '1416341980900', 'destination': '/queue/topic.helloworld'} the current time is:  15:19:40
+
+on_send DISCONNECT {'receipt': 'fd346f9c-3de6-478b-bd7f-2635eba64ecc'}
+
+on_disconnected
 
 ----

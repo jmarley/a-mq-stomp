@@ -26,11 +26,11 @@ class HornetqListener(object):
         return (headers, body)
 
 #dest='jms.queue.testQueue'
-dest= raw_input('enter topic name, e.g. jms.topic.spin :')
-user=raw_input('enter MQ user')
-passwd= getpass.getpass()
-server=raw_input('Enter server ip, e.g. 192.168.122.170 :')
-port=61613
+dest = input('enter topic name, e.g. jms.topic.spin : ')
+user = input('enter MQ user : ')
+passwd = getpass.getpass()
+server = input('Enter server ip, e.g. 192.168.122.170 : ')
+port = 61613
 
 # make STOMP server connection
 conn = stomp.Connection(host_and_ports=[(server, port)], prefer_localhost=False,keepalive=True,vhost='example.com')
