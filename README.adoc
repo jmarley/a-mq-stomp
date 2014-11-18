@@ -1,0 +1,83 @@
+= Use STOMP with Red Hat's A-MQ
+:source-highlighter: pygments
+:icons: font
+
+This project is in continuation of a blog post I did some months back on how to use hornetq and STOMP. Now I wanted to contrast what I did for hornetq with A-MQ. I'll be using the same STOMP/python code I wrote for hornetq.
+
+.Download A-MQ
+----
+https://access.redhat.com/jbossnetwork/restricted/listSoftware.html?downloadType=distributions&product=jboss.amq&productChanged=yes[jboss-a-mq-6.1.0.redhat-379]
+----
+
+NOTE: You can also use apache's activeMQ, which are roughly equivallant
+
+.Install
+
+[source,bash]
+----
+$ unzip /jboss-amq/installers/jboss-a-mq-6.1.0.redhat-379.zip
+----
+
+.Configure
+Add user::
+[source,bash]
+----
+$ echo "admin=admin,admin" >> ./jboss-a-mq-6.1.0.redhat-379/etc/user.properties
+----
+Add authentication::
+uncomment the following lines
+----
+$ vim ./jboss-a-mq-6.1.0.redhat-379/etc/system.properties
+...
+activemq.jmx.user=admin 
+activemq.jmx.password=admin
+...
+----
+Create Broker::
+[source,bash]
+----
+$ cp ./jboss-a-mq-6.1.0.redhat-379/etc/activemq.xml ./jboss-a-mq-6.1.0.redhat-379/etc/activemq-stomp.xml
+----
+Add stomp connector::
+[source,bash]
+----
+$ vim ./jboss-a-mq-6.1.0.redhat-379/etc/activemq-stomp.xml
+...
+        <transportConnectors>
+            <transportConnector name="stomp" uri="stomp://0.0.0.0:61613"/>
+            <transportConnector name="openwire" uri="tcp://0.0.0.0:61616"/>
+        </transportConnectors>
+    </broker>
+----
+Update A-MQ broker reference::
+[source,bash]
+----
+$ vim ./jboss-a-mq-6.1.0.redhat-379/etc/org.fusesource.mq.fabric.server-default.cfg
+...
+config=${karaf.base}/etc/activemq-stomp.xml
+...
+----
+
+Start server::
+[source,bash]
+----
+$ ./jboss-a-mq-6.1.0.redhat-379/bin/start
+----
+
+== Download STOMP python module
+----
+https://github.com/jasonrbriggs/stomp.py
+----
+
+NOTE: Get additional implemetations here http://stomp.github.io/implementations.html
+
+== Download STOMP script
+
+
+
+== Run script
+
+----
+
+
+----
